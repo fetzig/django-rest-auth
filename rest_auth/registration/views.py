@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
+
+from braces.views import CsrfExemptMixin
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -30,7 +33,7 @@ sensitive_post_parameters_m = method_decorator(
 )
 
 
-class RegisterView(CreateAPIView):
+class RegisterView(CsrfExemptMixin, CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = register_permission_classes()
     token_model = TokenModel
